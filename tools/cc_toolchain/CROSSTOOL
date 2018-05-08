@@ -1,0 +1,236 @@
+# Copyright 2016 The Bazel Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+major_version: "local"
+minor_version: ""
+default_target_cpu: "same_as_host"
+
+default_toolchain {
+  cpu: "k8"
+  toolchain_identifier: "clang-5.0-x86_64"
+}
+
+default_toolchain {
+  cpu: "gnueabihf"
+  toolchain_identifier: "clang-5.0-gnueabihf"
+}
+
+toolchain {
+  toolchain_identifier: "clang-5.0-x86_64"
+  abi_version: "local"
+  abi_libc_version: "local"
+  builtin_sysroot: ""
+  compiler: "clang-5.0"
+  host_system_name: "local"
+  needsPic: true
+  supports_gold_linker: false
+  supports_incremental_linker: false
+  supports_fission: false
+  supports_interface_shared_objects: false
+  supports_normalizing_ar: false
+  supports_start_end_lib: true
+  target_libc: "local"
+  target_cpu: "k8"
+  target_system_name: "local"
+  cxx_flag: "-std=c++1y"
+
+  linker_flag: "-fuse-ld=lld-5.0"
+  linker_flag: "-Wl,-no-as-needed"
+  linker_flag: "-Wl,-z,relro,-z,now"
+  linker_flag: "-B/usr/bin"
+  linker_flag: "-B/usr/bin"
+  linker_flag: "-lstdc++"
+  linker_flag: "-lm"
+
+  cxx_builtin_include_directory: "/usr/include/c++/5"
+  cxx_builtin_include_directory: "/usr/include/x86_64-linux-gnu/c++/5"
+  cxx_builtin_include_directory: "/usr/include/c++/5/backward"
+  cxx_builtin_include_directory: "/usr/lib/gcc/x86_64-linux-gnu/5/include"
+  cxx_builtin_include_directory: "/usr/local/include"
+  cxx_builtin_include_directory: "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"
+  cxx_builtin_include_directory: "/usr/include/x86_64-linux-gnu"
+  # This is a fix for https://github.com/bazelbuild/bazel/issues/3977
+  cxx_builtin_include_directory: "/usr/lib/llvm-5.0/lib/clang/5.0.0/include"
+  cxx_builtin_include_directory: "/usr/include"
+
+  objcopy_embed_flag: "-I"
+  objcopy_embed_flag: "binary"
+
+  unfiltered_cxx_flag: "-Wno-builtin-macro-redefined"
+  unfiltered_cxx_flag: "-D__DATE__=\"redacted\""
+  unfiltered_cxx_flag: "-D__TIMESTAMP__=\"redacted\""
+  unfiltered_cxx_flag: "-D__TIME__=\"redacted\""
+
+  compiler_flag: "-U_FORTIFY_SOURCE"
+  compiler_flag: "-D_FORTIFY_SOURCE=1"
+  compiler_flag: "-fstack-protector"
+  compiler_flag: "-Wall"
+  compiler_flag: "-B/usr/bin"
+  compiler_flag: "-B/usr/bin"
+  compiler_flag: "-fcolor-diagnostics"
+  compiler_flag: "-fno-omit-frame-pointer"
+
+  tool_path {name: "ar" path: "/usr/bin/ar" }
+  tool_path {name: "cpp" path: "/usr/bin/cpp" }
+  tool_path {name: "dwp" path: "/usr/bin/dwp" }
+  tool_path {name: "gcc" path: "/usr/bin/clang-5.0" }
+  tool_path {name: "gcov" path: "/usr/bin/gcov" }
+  tool_path {name: "ld" path: "/usr/bin/lld-5.0" }
+  tool_path {name: "nm" path: "/usr/bin/nm" }
+  tool_path {name: "objcopy" path: "/usr/bin/objcopy" }
+  tool_path {name: "objdump" path: "/usr/bin/objdump" }
+  tool_path {name: "strip" path: "/usr/bin/strip" }
+
+  compilation_mode_flags {
+    mode: DBG
+    compiler_flag: "-g"
+  }
+  compilation_mode_flags {
+    mode: OPT
+    compiler_flag: "-g0"
+    compiler_flag: "-O2"
+    compiler_flag: "-ffunction-sections"
+    compiler_flag: "-fdata-sections"
+    linker_flag: "-Wl,--gc-sections"
+  }
+  linking_mode_flags { mode: DYNAMIC }
+
+
+    feature {
+      name: 'coverage'
+      provides: 'profile'
+      flag_set {
+        action: 'preprocess-assemble'
+        action: 'c-compile'
+        action: 'c++-compile'
+        action: 'c++-header-parsing'
+        action: 'c++-header-preprocessing'
+        action: 'c++-module-compile'
+        flag_group {
+        flag: '-fprofile-arcs'
+        flag: '-ftest-coverage'
+      }
+
+
+
+      }
+      flag_set {
+        action: 'c++-link-dynamic-library'
+        action: 'c++-link-executable'
+        flag_group {
+        flag: '-lgcov'
+      }
+      }
+    }
+
+
+  feature {
+    name: 'fdo_optimize'
+    provides: 'profile'
+    flag_set {
+      action: 'c-compile'
+      action: 'c++-compile'
+      expand_if_all_available: 'fdo_profile_path'
+      flag_group {
+        flag: '-fprofile-use=%{fdo_profile_path}'
+        flag: '-fprofile-correction',
+      }
+    }
+  }
+}
+
+toolchain {
+  toolchain_identifier: "clang-5.0-gnueabihf"
+  abi_version: "local"
+  abi_libc_version: "local"
+  builtin_sysroot: ""
+  compiler: "clang-5.0"
+  host_system_name: "local"
+  needsPic: true
+  supports_gold_linker: false
+  supports_incremental_linker: false
+  supports_fission: false
+  supports_interface_shared_objects: false
+  supports_normalizing_ar: false
+  supports_start_end_lib: true
+  target_libc: "local"
+  target_cpu: "gnueabihf"
+  target_system_name: "arm-linux-gnueabihf"
+
+  cxx_flag: "-std=c++1y"
+
+  linker_flag: "--target=arm-linux-gnueabihf"
+  linker_flag: "--sysroot=external/raspberry_pi/sysroot"
+  linker_flag: "-fuse-ld=lld-5.0"
+  linker_flag: "-Wl,-no-as-needed"
+  linker_flag: "-Wl,-z,relro,-z,now"
+  linker_flag: "-B/usr/bin"
+  linker_flag: "-B/usr/bin"
+  linker_flag: "-lstdc++"
+  linker_flag: "-lm"
+
+  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/c++/5"
+  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf/c++/5"
+  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/c++/5/backward"
+  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/lib/gcc/arm-linux-gnueabihf/5/include"
+  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/lib/gcc/arm-linux-gnueabihf/5/include-fixed"
+  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf"
+  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include"
+  cxx_builtin_include_directory: "/usr/include/clang/5.0.0/include"
+
+  objcopy_embed_flag: "-I"
+  objcopy_embed_flag: "binary"
+
+  unfiltered_cxx_flag: "-Wno-builtin-macro-redefined"
+  unfiltered_cxx_flag: "-D__DATE__=\"redacted\""
+  unfiltered_cxx_flag: "-D__TIMESTAMP__=\"redacted\""
+  unfiltered_cxx_flag: "-D__TIME__=\"redacted\""
+
+  compiler_flag: "--target=arm-linux-gnueabihf"
+  compiler_flag: "-U_FORTIFY_SOURCE"
+  compiler_flag: "-D_FORTIFY_SOURCE=1"
+  compiler_flag: "-fstack-protector"
+  compiler_flag: "-Wall"
+  compiler_flag: "-B/usr/bin"
+  compiler_flag: "-B/usr/bin"
+  compiler_flag: "-fcolor-diagnostics"
+  compiler_flag: "-fno-omit-frame-pointer"
+  compiler_flag: "-isysroot=external/raspberry_pi/sysroot"
+  compiler_flag: "--sysroot=external/raspberry_pi/sysroot"
+
+  tool_path {name: "ar" path: "/usr/bin/ar" }
+  tool_path {name: "cpp" path: "/usr/bin/cpp" }
+  tool_path {name: "dwp" path: "/usr/bin/dwp" }
+  tool_path {name: "gcc" path: "/usr/bin/clang-5.0" }
+  tool_path {name: "gcov" path: "/usr/bin/gcov" }
+  tool_path {name: "ld" path: "/usr/bin/lld-5.0" }
+  tool_path {name: "nm" path: "/usr/bin/nm" }
+  tool_path {name: "objcopy" path: "/usr/bin/objcopy" }
+  tool_path {name: "objdump" path: "/usr/bin/objdump" }
+  tool_path {name: "strip" path: "/usr/bin/strip" }
+
+  compilation_mode_flags {
+    mode: DBG
+    compiler_flag: "-g"
+  }
+  compilation_mode_flags {
+    mode: OPT
+    compiler_flag: "-g0"
+    compiler_flag: "-O2"
+    compiler_flag: "-ffunction-sections"
+    compiler_flag: "-fdata-sections"
+    linker_flag: "-Wl,--gc-sections"
+  }
+  linking_mode_flags { mode: DYNAMIC }
+}
