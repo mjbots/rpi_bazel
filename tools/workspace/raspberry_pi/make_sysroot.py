@@ -52,6 +52,7 @@ def main():
         '/usr/include/linux',
         '/usr/include/net',
         '/usr/include/netinet',
+        '/usr/include/rpc',
         '/usr/include/X11',
     ]
 
@@ -64,6 +65,8 @@ def main():
         'libgcc_s.so*',
         'libm-2*.so',
         'libm.so*',
+        'libpthread-2*.so',
+        'libpthread.so*',
         'librt-2*.so',
         'librt.so*',
         'libutil-2*',
@@ -77,6 +80,13 @@ def main():
         'libc.so',
         'libm.a',
         'libm.so',
+        'libpthread.a',
+        'libpthread_nonshared.a',
+        'libpthread.so',
+        'librt.so',
+        'librt.a',
+        'libutil.so',
+        'libutil.a',
     ]]
 
     usr_include_file_sources = ['/usr/include/{}'.format(x) for x in [

@@ -52,6 +52,8 @@ toolchain {
   linker_flag: "-B/usr/bin"
   linker_flag: "-lstdc++"
   linker_flag: "-lm"
+  linker_flag: "-lpthread"
+  linker_flag: "-lrt"
 
   cxx_builtin_include_directory: "/usr/include/c++/5"
   cxx_builtin_include_directory: "/usr/include/x86_64-linux-gnu/c++/5"
@@ -179,6 +181,8 @@ toolchain {
   linker_flag: "-B/usr/bin"
   linker_flag: "-lstdc++"
   linker_flag: "-lm"
+  linker_flag: "-lpthread"
+  linker_flag: "-lrt"
 
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/c++/5"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf/c++/5"
@@ -187,6 +191,7 @@ toolchain {
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/lib/gcc/arm-linux-gnueabihf/5/include-fixed"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include"
+  cxx_builtin_include_directory: "/usr/lib/llvm-5.0/lib/clang/5.0.0/include"
   cxx_builtin_include_directory: "/usr/include/clang/5.0.0/include"
 
   objcopy_embed_flag: "-I"
