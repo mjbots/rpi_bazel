@@ -71,6 +71,7 @@ def main():
         'librt.so*',
         'libutil-2*',
         'libutil.so*',
+        'libresolv*',
     ]]
 
     usr_lib_file_sources = ['/usr/lib/{}/{}'.format(args.target, x) for x in [
@@ -78,6 +79,8 @@ def main():
         'libc.a',
         'libc_nonshared.a',
         'libc.so',
+        'libdl.a',
+        'libdl.so',
         'libm.a',
         'libm.so',
         'libpthread.a',
@@ -87,6 +90,8 @@ def main():
         'librt.a',
         'libutil.so',
         'libutil.a',
+        'libresolv.a',
+        'libresolv.so',
     ]]
 
     usr_include_file_sources = ['/usr/include/{}'.format(x) for x in [
