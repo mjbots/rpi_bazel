@@ -22,8 +22,8 @@ default_toolchain {
 }
 
 default_toolchain {
-  cpu: "gnueabihf"
-  toolchain_identifier: "clang-5.0-gnueabihf"
+  cpu: "armeabihf"
+  toolchain_identifier: "clang-5.0-armeabihf"
 }
 
 toolchain {
@@ -153,7 +153,7 @@ toolchain {
 }
 
 toolchain {
-  toolchain_identifier: "clang-5.0-gnueabihf"
+  toolchain_identifier: "clang-5.0-armeabihf"
   abi_version: "local"
   abi_libc_version: "local"
   builtin_sysroot: ""
@@ -167,8 +167,8 @@ toolchain {
   supports_normalizing_ar: false
   supports_start_end_lib: true
   target_libc: "local"
-  target_cpu: "gnueabihf"
-  target_system_name: "arm-linux-gnueabihf"
+  target_cpu: "armeabihf"
+  target_system_name: "arm-linux-armeabihf"
 
   cxx_flag: "-std=c++1y"
 

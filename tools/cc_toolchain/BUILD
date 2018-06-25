@@ -6,7 +6,7 @@ cc_toolchain_suite(
     name = "toolchain",
     toolchains = {
         "k8|clang-5.0": "cc_toolchain_linux",
-        "gnueabihf|clang-5.0": "cc_toolchain_gnueabihf",
+        "armeabihf|clang-5.0": "cc_toolchain_armeabihf",
     },
 )
 
@@ -37,10 +37,10 @@ cc_toolchain(
 )
 
 cc_toolchain(
-    name = "cc_toolchain_gnueabihf",
+    name = "cc_toolchain_armeabihf",
     all_files = "//tools/cc_toolchain/raspberry_pi_sysroot:everything",
     compiler_files = "//tools/cc_toolchain/raspberry_pi_sysroot:everything",
-    cpu = "gnueabihf",
+    cpu = "armeabihf",
     dwp_files = ":empty",
     dynamic_runtime_libs = [":empty"],
     linker_files = "//tools/cc_toolchain/raspberry_pi_sysroot:everything",
