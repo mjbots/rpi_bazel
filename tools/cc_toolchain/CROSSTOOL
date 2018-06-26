@@ -18,20 +18,20 @@ default_target_cpu: "same_as_host"
 
 default_toolchain {
   cpu: "k8"
-  toolchain_identifier: "clang-5.0-x86_64"
+  toolchain_identifier: "clang-6.0-x86_64"
 }
 
 default_toolchain {
   cpu: "armeabihf"
-  toolchain_identifier: "clang-5.0-armeabihf"
+  toolchain_identifier: "clang-6.0-armeabihf"
 }
 
 toolchain {
-  toolchain_identifier: "clang-5.0-x86_64"
+  toolchain_identifier: "clang-6.0-x86_64"
   abi_version: "local"
   abi_libc_version: "local"
   builtin_sysroot: ""
-  compiler: "clang-5.0"
+  compiler: "clang-6.0"
   host_system_name: "local"
   needsPic: true
   supports_gold_linker: false
@@ -45,7 +45,7 @@ toolchain {
   target_system_name: "local"
   cxx_flag: "-std=c++1y"
 
-  linker_flag: "-fuse-ld=lld-5.0"
+  linker_flag: "-fuse-ld=lld-6.0"
   linker_flag: "-Wl,-no-as-needed"
   linker_flag: "-Wl,-z,relro,-z,now"
   linker_flag: "-B/usr/bin"
@@ -63,8 +63,9 @@ toolchain {
   cxx_builtin_include_directory: "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"
   cxx_builtin_include_directory: "/usr/include/x86_64-linux-gnu"
   # This is a fix for https://github.com/bazelbuild/bazel/issues/3977
-  cxx_builtin_include_directory: "/usr/lib/llvm-5.0/lib/clang/5.0.0/include"
+  cxx_builtin_include_directory: "/usr/lib/llvm-6.0/lib/clang/6.0.1/include"
   cxx_builtin_include_directory: "/usr/include"
+  cxx_builtin_include_directory: "/usr/lib/gcc/x86_64-linux-gnu/5.4.0/include"
 
   objcopy_embed_flag: "-I"
   objcopy_embed_flag: "binary"
@@ -76,19 +77,21 @@ toolchain {
 
   compiler_flag: "-U_FORTIFY_SOURCE"
   compiler_flag: "-D_FORTIFY_SOURCE=1"
+  compiler_flag: "-DMB_LEN_MAX=16"
   compiler_flag: "-fstack-protector"
   compiler_flag: "-Wall"
   compiler_flag: "-B/usr/bin"
   compiler_flag: "-B/usr/bin"
   compiler_flag: "-fcolor-diagnostics"
+  compiler_flag: "-ffreestanding"
   compiler_flag: "-fno-omit-frame-pointer"
 
   tool_path {name: "ar" path: "/usr/bin/ar" }
   tool_path {name: "cpp" path: "/usr/bin/cpp" }
   tool_path {name: "dwp" path: "/usr/bin/dwp" }
-  tool_path {name: "gcc" path: "/usr/bin/clang-5.0" }
+  tool_path {name: "gcc" path: "/usr/bin/clang-6.0" }
   tool_path {name: "gcov" path: "/usr/bin/gcov" }
-  tool_path {name: "ld" path: "/usr/bin/lld-5.0" }
+  tool_path {name: "ld" path: "/usr/bin/lld-6.0" }
   tool_path {name: "nm" path: "/usr/bin/nm" }
   tool_path {name: "objcopy" path: "/usr/bin/objcopy" }
   tool_path {name: "objdump" path: "/usr/bin/objdump" }
@@ -97,14 +100,21 @@ toolchain {
   compilation_mode_flags {
     mode: DBG
     compiler_flag: "-g"
+    linker_flag: "-g"
+  }
+  compilation_mode_flags {
+    mode: FASTBUILD
+    compiler_flag: "-g"
+    linker_flag: "-g"
   }
   compilation_mode_flags {
     mode: OPT
-    compiler_flag: "-g0"
+    compiler_flag: "-g"
     compiler_flag: "-O2"
     compiler_flag: "-ffunction-sections"
     compiler_flag: "-fdata-sections"
     linker_flag: "-Wl,--gc-sections"
+    linker_flag: "-g"
   }
   linking_mode_flags { mode: DYNAMIC }
 
@@ -153,11 +163,11 @@ toolchain {
 }
 
 toolchain {
-  toolchain_identifier: "clang-5.0-armeabihf"
+  toolchain_identifier: "clang-6.0-armeabihf"
   abi_version: "local"
   abi_libc_version: "local"
   builtin_sysroot: ""
-  compiler: "clang-5.0"
+  compiler: "clang-6.0"
   host_system_name: "local"
   needsPic: true
   supports_gold_linker: false
@@ -172,9 +182,9 @@ toolchain {
 
   cxx_flag: "-std=c++1y"
 
-  linker_flag: "--target=arm-linux-gnueabihf"
+  linker_flag: "--target=armv7-linux-gnueabihf"
   linker_flag: "--sysroot=external/raspberry_pi/sysroot"
-  linker_flag: "-fuse-ld=lld-5.0"
+  linker_flag: "-fuse-ld=lld-6.0"
   linker_flag: "-Wl,-no-as-needed"
   linker_flag: "-Wl,-z,relro,-z,now"
   linker_flag: "-B/usr/bin"
@@ -191,8 +201,8 @@ toolchain {
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/lib/gcc/arm-linux-gnueabihf/5/include-fixed"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include"
-  cxx_builtin_include_directory: "/usr/lib/llvm-5.0/lib/clang/5.0.0/include"
-  cxx_builtin_include_directory: "/usr/include/clang/5.0.0/include"
+  cxx_builtin_include_directory: "/usr/lib/llvm-6.0/lib/clang/6.0.1/include"
+  cxx_builtin_include_directory: "/usr/include/clang/6.0.1/include"
 
   objcopy_embed_flag: "-I"
   objcopy_embed_flag: "binary"
@@ -202,14 +212,16 @@ toolchain {
   unfiltered_cxx_flag: "-D__TIMESTAMP__=\"redacted\""
   unfiltered_cxx_flag: "-D__TIME__=\"redacted\""
 
-  compiler_flag: "--target=arm-linux-gnueabihf"
+  compiler_flag: "--target=armv7-linux-gnueabihf"
   compiler_flag: "-U_FORTIFY_SOURCE"
   compiler_flag: "-D_FORTIFY_SOURCE=1"
+  compiler_flag: "-DMB_LEN_MAX=16"
   compiler_flag: "-fstack-protector"
   compiler_flag: "-Wall"
   compiler_flag: "-B/usr/bin"
   compiler_flag: "-B/usr/bin"
   compiler_flag: "-fcolor-diagnostics"
+  compiler_flag: "-ffreestanding"
   compiler_flag: "-fno-omit-frame-pointer"
   compiler_flag: "-isysroot=external/raspberry_pi/sysroot"
   compiler_flag: "--sysroot=external/raspberry_pi/sysroot"
@@ -217,9 +229,9 @@ toolchain {
   tool_path {name: "ar" path: "/usr/bin/ar" }
   tool_path {name: "cpp" path: "/usr/bin/cpp" }
   tool_path {name: "dwp" path: "/usr/bin/dwp" }
-  tool_path {name: "gcc" path: "/usr/bin/clang-5.0" }
+  tool_path {name: "gcc" path: "/usr/bin/clang-6.0" }
   tool_path {name: "gcov" path: "/usr/bin/gcov" }
-  tool_path {name: "ld" path: "/usr/bin/lld-5.0" }
+  tool_path {name: "ld" path: "/usr/bin/lld-6.0" }
   tool_path {name: "nm" path: "/usr/bin/nm" }
   tool_path {name: "objcopy" path: "/usr/bin/objcopy" }
   tool_path {name: "objdump" path: "/usr/bin/objdump" }
@@ -228,14 +240,21 @@ toolchain {
   compilation_mode_flags {
     mode: DBG
     compiler_flag: "-g"
+    linker_flag: "-g"
+  }
+  compilation_mode_flags {
+    mode: FASTBUILD
+    compiler_flag: "-g"
+    linker_flag: "-g"
   }
   compilation_mode_flags {
     mode: OPT
-    compiler_flag: "-g0"
+    compiler_flag: "-g"
     compiler_flag: "-O2"
     compiler_flag: "-ffunction-sections"
     compiler_flag: "-fdata-sections"
     linker_flag: "-Wl,--gc-sections"
+    linker_flag: "-g"
   }
   linking_mode_flags { mode: DYNAMIC }
 }

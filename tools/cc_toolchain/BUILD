@@ -5,8 +5,8 @@ package(default_visibility = ["//visibility:public"])
 cc_toolchain_suite(
     name = "toolchain",
     toolchains = {
-        "k8|clang-5.0": "cc_toolchain_linux",
-        "armeabihf|clang-5.0": "cc_toolchain_armeabihf",
+        "k8|clang-6.0": "cc_toolchain_linux",
+        "armeabihf|clang-6.0": "cc_toolchain_armeabihf",
     },
 )
 

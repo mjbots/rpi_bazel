@@ -7,7 +7,7 @@ needs a functioning clang compiler.
 ## Example Usage ##
 
 ```
-sudo apt install clang-5.0
+sudo apt install clang-6.0 lld-6.0
 ```
 
 In `tools/workspace/rpi_bazel/repository.bzl`
