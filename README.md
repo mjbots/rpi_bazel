@@ -46,9 +46,11 @@ In WORKSPACE:
 ```
 load("//tools/workspace:default.bzl", "add_default_repositories")
 
-load("@rpi_bazel//tools/worksapce:default.bzl",
+add_default_repositories()
+
+load("@rpi_bazel//tools/workspace:default.bzl",
      rpi_bazel_add = "add_default_repositories")
-rpi_bazle_add()
+rpi_bazel_add()
 ```
 
 
