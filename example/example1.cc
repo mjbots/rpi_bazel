@@ -14,7 +14,10 @@
 
 #include <stdio.h>
 
+extern "C" {
 int main(int argc, char** argv) {
   printf("hello there!\n");
   return 0;
+}
+
 }
