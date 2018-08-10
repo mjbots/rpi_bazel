@@ -202,7 +202,9 @@ toolchain {
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/lib/gcc/arm-linux-gnueabihf/5/include-fixed"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include"
+  cxx_builtin_include_directory: "/usr/lib/llvm-6.0/lib/clang/6.0.0/include"
   cxx_builtin_include_directory: "/usr/lib/llvm-6.0/lib/clang/6.0.1/include"
+  cxx_builtin_include_directory: "/usr/include/clang/6.0.0/include"
   cxx_builtin_include_directory: "/usr/include/clang/6.0.1/include"
 
   objcopy_embed_flag: "-I"
