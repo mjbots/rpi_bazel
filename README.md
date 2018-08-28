@@ -61,7 +61,7 @@ build --crosstool_top=@rpi_bazel//tools/cc_toolchain:toolchain
 test --crosstool_top=@rpi_bazel//tools/cc_toolchain:toolchain
 
 build:pi --cpu=armeabihf
-build:pi --cpu=armeabihf
+test:pi --cpu=armeabihf
 ```
 
 Then you can build and run tests with:
