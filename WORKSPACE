@@ -16,8 +16,8 @@
 
 workspace(name = "rpi_bazel")
 
-BAZEL_VERSION = "0.19.0"
-BAZEL_VERSION_SHA = "001371df816005e907670f483f810ee935176bdc811a5ffa2314c59766b68ec4"
+BAZEL_VERSION = "0.23.2"
+BAZEL_VERSION_SHA = "080626af0468e55dcbefb9801da3cdb39e29dfb2b5639f79dba67b95213412c4"
 
 load("//tools/workspace:default.bzl", "add_default_repositories")
 

@@ -1,3 +1,6 @@
+build --compiler=clang-6.0
+test --compiler=clang-6.0
+
 build --python_path=/usr/bin/python3
 test --python_path=/usr/bin/python3
 

@@ -24,6 +24,7 @@ filegroup(
 
 cc_toolchain(
     name = "cc_toolchain_linux",
+    toolchain_identifier = "clang-6.0-x86_64",
     all_files = ":empty",
     compiler_files = ":empty",
     cpu = "k8",
@@ -38,6 +39,7 @@ cc_toolchain(
 
 cc_toolchain(
     name = "cc_toolchain_armeabihf",
+    toolchain_identifier = "clang-6.0-armeabihf",
     all_files = "//tools/cc_toolchain/raspberry_pi_sysroot:everything",
     compiler_files = "//tools/cc_toolchain/raspberry_pi_sysroot:everything",
     cpu = "armeabihf",
