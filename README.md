@@ -6,10 +6,6 @@ needs a functioning clang compiler.
 
 ## Example Usage ##
 
-```
-sudo apt install clang-6.0 lld-6.0
-```
-
 In `tools/workspace/rpi_bazel/repository.bzl`
 
 ```
@@ -64,8 +60,8 @@ build:pi --cpu=armeabihf
 test:pi --cpu=armeabihf
 ```
 
-Then you can build and run tests with:
+Then you can build with:
 
 ```
-bazel test --config=pi //...
+bazel build --config=pi //...
 ```
