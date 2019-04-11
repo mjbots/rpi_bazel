@@ -19,6 +19,6 @@ load("//tools/workspace/raspberry_pi:repository.bzl", "raspberry_pi_repository")
 
 def add_default_repositories(excludes = []):
     if "clang" not in excludes:
-        clang_repository(name = "org_llvm_clang")
+        clang_repository()
     if "raspberry_pi" not in excludes:
         raspberry_pi_repository(name = "raspberry_pi")

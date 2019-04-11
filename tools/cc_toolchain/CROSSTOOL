@@ -33,7 +33,7 @@ toolchain {
   abi_version: "local"
   abi_libc_version: "local"
   builtin_sysroot: ""
-  compiler: "compiler"
+  compiler: "clang"
   host_system_name: "local"
   target_libc: "local"
   target_cpu: "k8"
@@ -69,8 +69,16 @@ toolchain {
   linker_flag: "-Wno-unused-command-line-argument"
 
   cxx_flag: "-std=c++17"
-  cxx_flag: "-stdlib=libc++"
-  linker_flag: "-stdlib=libc++"
+
+  # We rely on a compiled version of libcxx, which for now users must
+  # manually specify when linking applications (but not compiling).
+  cxx_flag: "-nostdinc++"
+  linker_flag: "-nostdinc++"
+  linker_flag: "-nostdlib++"
+  cxx_flag: "-isystem"
+  cxx_flag: "external/org_llvm_libcxx/include"
+  cxx_flag: "-isystem"
+  cxx_flag: "external/org_llvm_libcxxabi/include"
 
   linker_flag: "-fuse-ld=lld"
   linker_flag: "-rtlib=compiler-rt"
@@ -201,11 +209,6 @@ toolchain {
   needsPic: true
 
 
-  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/c++/5"
-  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf/c++/5"
-  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/c++/5/backward"
-  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/lib/gcc/arm-linux-gnueabihf/5/include"
-  cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/lib/gcc/arm-linux-gnueabihf/5/include-fixed"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf"
   cxx_builtin_include_directory: "external/raspberry_pi/sysroot/usr/include"
   cxx_builtin_include_directory: "external/org_llvm_clang/include/"
@@ -217,8 +220,16 @@ toolchain {
   linker_flag: "-Wno-unused-command-line-argument"
 
   cxx_flag: "-std=c++17"
-  cxx_flag: "-stdlib=libc++"
-  linker_flag: "-stdlib=libc++"
+
+  # We rely on a compiled version of libcxx, which for now users must
+  # manually specify when linking applications (but not compiling).
+  cxx_flag: "-nostdinc++"
+  linker_flag: "-nostdinc++"
+  linker_flag: "-nostdlib++"
+  cxx_flag: "-isystem"
+  cxx_flag: "external/org_llvm_libcxx/include"
+  cxx_flag: "-isystem"
+  cxx_flag: "external/org_llvm_libcxxabi/include"
 
   linker_flag: "-fuse-ld=lld"
   linker_flag: "-lm"

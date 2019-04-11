@@ -50,6 +50,8 @@ filegroup(
         "@org_llvm_clang//:includes",
         "@org_llvm_clang//:runtime_libs",
         "@org_llvm_clang//:static_libs",
+        "@org_llvm_libcxx//:raw_headers",
+        "@org_llvm_libcxxabi//:raw_headers",
     ],
 )
 
@@ -58,7 +60,7 @@ cc_toolchain(
     name = "cc_toolchain_linux",
     toolchain_identifier = "clang-x86_64",
     all_files = ":clang_all",
-    compiler_files = ":clang_wrappers",
+    compiler_files = ":clang_all",
     cpu = "k8",
     dwp_files = ":clang_wrappers",
     dynamic_runtime_libs = ["@org_llvm_clang//:runtime_libs"],

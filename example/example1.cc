@@ -12,11 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <stdio.h>
+#include <iostream>
+#include <string>
 
 extern "C" {
 int main(int, char**) {
-  printf("hello there!\n");
+  std::string stuff = "hello there!";
+
+  std::cout << "yo: " << stuff << "\n";
+
   return 0;
 }
 
