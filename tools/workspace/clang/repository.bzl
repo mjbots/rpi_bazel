@@ -39,7 +39,7 @@ def clang_repository():
     http_archive(
         name = "org_llvm_libcxxabi",
         urls = [
-            "http://releases.llvm.org/7.0.1/libcxxabi-7.0.1.src.tar.xz",
+            "http://releases.llvm.org/7.0.0/libcxxabi-7.0.0.src.tar.xz",
         ],
         sha256 = "9b45c759ff397512eae4d938ff82827b1bd7ccba49920777e5b5e460baeb245f",
         strip_prefix = "libcxxabi-7.0.0.src",
