@@ -15,13 +15,10 @@
 #include <iostream>
 #include <string>
 
-extern "C" {
 int main(int, char**) {
   std::string stuff = "hello there!";
 
   std::cout << "yo: " << stuff << "\n";
 
   return 0;
-}
-
 }

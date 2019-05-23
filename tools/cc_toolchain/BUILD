@@ -15,6 +15,8 @@
 
 package(default_visibility = ["//visibility:public"])
 
+load(":cc_toolchain_config.bzl", "cc_toolchain_config")
+
 cc_toolchain_suite(
     name = "toolchain",
     toolchains = {
@@ -56,19 +58,33 @@ filegroup(
 )
 
 
+cc_toolchain_config(
+    name = "clang-k8",
+    toolchain_identifier = "clang-k8",
+    cpu = "k8",
+    target_cpu = "k8",
+    target_system_name = "k8",
+    builtin_include_directories = [
+        "external/org_llvm_clang/include/",
+        "external/org_llvm_clang/lib/clang/7.0.0/include/",
+        "/usr/include/",
+    ],
+    host_compiler_prefix = "wrapper",
+    host_compiler_path = "wrapper/clang-clang",
+)
+
+
 cc_toolchain(
     name = "cc_toolchain_linux",
     toolchain_identifier = "clang-x86_64",
     all_files = ":clang_all",
     compiler_files = ":clang_all",
-    cpu = "k8",
     dwp_files = ":clang_wrappers",
-    dynamic_runtime_libs = ["@org_llvm_clang//:runtime_libs"],
     linker_files = ":clang_wrappers",
     objcopy_files = ":clang_wrappers",
-    static_runtime_libs = ["@org_llvm_clang//:static_libs"],
     strip_files = ":clang_wrappers",
     supports_param_files = True,
+    toolchain_config = ":clang-k8",
 )
 
 filegroup(
@@ -79,17 +95,36 @@ filegroup(
     ],
 )
 
+cc_toolchain_config(
+    name = "clang-armeabihf",
+    toolchain_identifier = "clang-armeabihf",
+    cpu = "k8",
+    target_cpu = "armeabihf",
+    target_system_name = "armeabihf",
+    builtin_include_directories = [
+        "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf",
+        "external/raspberry_pi/sysroot/usr/include",
+        "external/org_llvm_clang/include/",
+        "external/org_llvm_clang/lib/clang/7.0.0/include/",
+        "/usr/include/",
+    ],
+    host_compiler_prefix = "wrapper",
+    host_compiler_path = "wrapper/clang-clang",
+    extra_features = [
+        "armeabihf",
+    ],
+    linker_bin_path = "external/org_llvm_clang/bin",
+)
+
 cc_toolchain(
     name = "cc_toolchain_armeabihf",
     toolchain_identifier = "clang-armeabihf",
     all_files = ":clang_arm_all",
     compiler_files = ":clang_arm_all",
-    cpu = "armeabihf",
     dwp_files = ":clang_wrappers",
-    dynamic_runtime_libs = [":empty"],
     linker_files = ":clang_arm_all",
     objcopy_files = ":clang_wrappers",
-    static_runtime_libs = [":empty"],
     strip_files = ":clang_wrappers",
     supports_param_files = True,
+    toolchain_config = ":clang-armeabihf",
 )
