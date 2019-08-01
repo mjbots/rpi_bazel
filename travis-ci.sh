@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -ev
+
+./tools/bazel build //...
+./tools/bazel build --cpu=armeabihf //...
