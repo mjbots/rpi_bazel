@@ -4,6 +4,8 @@ This contains a set of rules to use for cross compiling C++ to a
 Raspberry Pi using clang.  It includes a minimal sysroot, and only
 needs a functioning clang compiler.
 
+ * travis-ci [![Build Status](https://travis-ci.org/mjbots/rpi_bazel.svg?branch=master)](https://travis-ci.org/mjbots/rpi_bazel)
+
 ## Example Usage ##
 
 In `tools/workspace/rpi_bazel/repository.bzl`
