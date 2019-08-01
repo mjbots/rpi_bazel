@@ -1,6 +1,6 @@
 # -*- python -*-
 
-# Copyright 2018 Josh Pieper, jjp@pobox.com.
+# Copyright 2018-2019 Josh Pieper, jjp@pobox.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,27 +21,27 @@ def clang_repository():
     http_archive(
         name = "org_llvm_clang",
         urls = [
-            "http://releases.llvm.org/7.0.0/clang+llvm-7.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz",
+            "http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz",
         ],
-        sha256 = "69b85c833cd28ea04ce34002464f10a6ad9656dd2bba0f7133536a9927c660d2",
-        strip_prefix = "clang+llvm-7.0.0-x86_64-linux-gnu-ubuntu-16.04",
+        sha256 = "87b88d620284d1f0573923e6f7cc89edccf11d19ebaec1cfb83b4f09ac5db09c",
+        strip_prefix = "clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04",
         build_file = Label("//tools/workspace/clang:package.BUILD"),
     )
     http_archive(
         name = "org_llvm_libcxx",
         urls = [
-            "http://releases.llvm.org/7.0.0/libcxx-7.0.0.src.tar.xz",
+            "http://releases.llvm.org/8.0.0/libcxx-8.0.0.src.tar.xz",
         ],
-        sha256 = "9b342625ba2f4e65b52764ab2061e116c0337db2179c6bce7f9a0d70c52134f0",
-        strip_prefix = "libcxx-7.0.0.src",
+        sha256 = "c2902675e7c84324fb2c1e45489220f250ede016cc3117186785d9dc291f9de2",
+        strip_prefix = "libcxx-8.0.0.src",
         build_file = Label("//tools/workspace/clang:libcxx.BUILD"),
     )
     http_archive(
         name = "org_llvm_libcxxabi",
         urls = [
-            "http://releases.llvm.org/7.0.0/libcxxabi-7.0.0.src.tar.xz",
+            "http://releases.llvm.org/8.0.0/libcxxabi-8.0.0.src.tar.xz",
         ],
-        sha256 = "9b45c759ff397512eae4d938ff82827b1bd7ccba49920777e5b5e460baeb245f",
-        strip_prefix = "libcxxabi-7.0.0.src",
+        sha256 = "c2d6de9629f7c072ac20ada776374e9e3168142f20a46cdb9d6df973922b07cd",
+        strip_prefix = "libcxxabi-8.0.0.src",
         build_file = Label("//tools/workspace/clang:libcxxabi.BUILD"),
     )
