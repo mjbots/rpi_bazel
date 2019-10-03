@@ -60,6 +60,9 @@ test --crosstool_top=@rpi_bazel//tools/cc_toolchain:toolchain
 
 build:pi --cpu=armeabihf
 test:pi --cpu=armeabihf
+
+build:pi --compiler=clang
+test:pi --compiler=clang
 ```
 
 Then you can build with:
