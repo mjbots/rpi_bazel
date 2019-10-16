@@ -222,7 +222,7 @@ def _impl(ctx):
         flag_sets = [
             flag_set(
                 actions = [ACTION_NAMES.c_compile, ACTION_NAMES.cpp_compile],
-                flag_groups = [flag_group(flags = ["-g"])],
+                flag_groups = [flag_group(flags = ["-g3", "-ggdb"])],
             ),
         ],
         implies = ["common"],
@@ -280,7 +280,7 @@ def _impl(ctx):
                 actions = [ACTION_NAMES.c_compile, ACTION_NAMES.cpp_compile],
                 flag_groups = [
                     flag_group(
-                        flags = ["-g0", "-O2", "-ffunction-sections", "-fdata-sections"],
+                        flags = ["-ggdb", "-O2", "-ffunction-sections", "-fdata-sections"],
                     ),
                 ],
             ),
