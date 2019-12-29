@@ -471,6 +471,18 @@ def _impl(ctx):
         ],
     )
 
+    debuginfo_feature = feature(
+        name = "debuginfo",
+        flag_sets = [
+            flag_set(
+                actions = all_compile_actions + all_link_actions,
+                flag_groups = [flag_group(flags= [
+                    "-fno-limit-debug-info",
+                ])],
+            ),
+        ],
+    )
+
     common_feature = feature(
         name = "common",
         implies = [
@@ -485,6 +497,7 @@ def _impl(ctx):
             "no-canonical-prefixes",
             "linker-bin-path",
             "lld",
+            "debuginfo",
         ] + (["armeabihf", "rpi_sysroot"]
              if "armeabihf" in ctx.attr.extra_features else [])
     )
@@ -509,6 +522,7 @@ def _impl(ctx):
         supports_dynamic_linker_feature,
         supports_pic_feature,
         lld_feature,
+        debuginfo_feature,
         armeabihf_feature,
         rpi_sysroot_feature,
     ]
