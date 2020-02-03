@@ -459,6 +459,16 @@ def _impl(ctx):
         ],
     )
 
+    cpp20_feature = feature(
+        name = "c++20",
+        flag_sets = [
+            flag_set(
+                actions = [ACTION_NAMES.cpp_compile],
+                flag_groups = [flag_group(flags = ["-std=c++2a"])],
+            ),
+        ],
+    )
+
     lld_feature = feature(
         name = "lld",
         flag_sets = [
@@ -487,7 +497,7 @@ def _impl(ctx):
         name = "common",
         implies = [
             "stdlib",
-            "c++17",
+            "c++20",
             "determinism",
             "alwayslink",
             "hardening",
@@ -504,6 +514,7 @@ def _impl(ctx):
 
     features = [
         cpp17_feature,
+        cpp20_feature,
         stdlib_feature,
         determinism_feature,
         alwayslink_feature,
