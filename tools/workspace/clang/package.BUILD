@@ -1,6 +1,6 @@
 # -*- python -*-
 
-# Copyright 2018-2019 Josh Pieper, jjp@pobox.com.
+# Copyright 2018-2020 Josh Pieper, jjp@pobox.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,14 +33,14 @@ filegroup(
 
 filegroup(
     name = "clang_libs",
-    srcs = glob(["lib/clang/9.0.0/lib/linux/*.a"]),
+    srcs = glob(["lib/clang/10.0.0/lib/linux/*.a"]),
 )
 
 filegroup(
     name = "includes",
     srcs = glob([
         "include/c++/**",
-        "lib/clang/9.0.0/include/**",
+        "lib/clang/10.0.0/include/**",
     ]),
 )
 
