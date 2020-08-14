@@ -24,6 +24,7 @@ filegroup(
         "bin/llvm-dwp",
         "bin/llvm-objcopy",
         "bin/llvm-objdump",
+        "bin/llvm-strip",
         "bin/ld.lld",
         "bin/llvm-ar",
         "bin/llvm-nm",
