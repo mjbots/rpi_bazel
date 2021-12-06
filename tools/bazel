@@ -1,6 +1,7 @@
 #!/usr/bin/python3 -B
 
 # Copyright 2018 Josh Pieper, jjp@pobox.com.
+# Copyright 2021 Diego Dagum, email@diegodagum.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,58 +22,21 @@ import subprocess
 import sys
 import tempfile
 
-SCRIPT_PATH = os.path.basename(__file__)
-
-def find_workspace_dir():
-    path = SCRIPT_PATH
-    while True:
-        maybe_workspace = os.path.join(path, 'WORKSPACE')
-        if os.path.exists(maybe_workspace):
-            return path
-
-        assert path != ''
-
-        old_path = path
-        path = os.path.dirname(path)
-        assert path != old_path
-
-
-WORKSPACE_DIR = find_workspace_dir()
-
-def maybe_copy(maybe_filename, dest):
-    if not os.path.exists(maybe_filename):
-        return
-
-    with open(maybe_filename, 'rb') as f:
-        dest.write(f.read())
-
-
-def get_workspace_var(var):
-    search = re.compile(r'^{}\s*=\s*"(.*)"'.format(var))
-
-    with open(os.path.join(WORKSPACE_DIR, 'WORKSPACE'), 'r') as f:
-        for line in f:
-            match = re.search(search, line)
-            if not match:
-                continue
-
-            return match.group(1)
-
-    raise RuntimeError('Must supply a {} in the WORKSPACE'.format(var))
-
-
 BAZEL_REMOTE_SOURCE = 'https://github.com/bazelbuild/bazel/releases/download'
 
 BAZEL_BIN_CACHE = os.path.expanduser('~/.cache/bazel')
-BAZEL_VERSION = get_workspace_var('BAZEL_VERSION')
-BAZEL_VERSION_SHA = get_workspace_var('BAZEL_VERSION_SHA')
+BAZEL_VERSION = '4.2.2'
+BAZEL_VERSION_SHA = '288660a310193c492a38a0480c42c74789564c09511e6adc045b5b4b4f117f7d'
+HOST_OS = 'darwin'
+HOST_ARCHITECTURE = 'x86_64'
 
 
 def download_bazel(dest):
     dist_tempfile = tempfile.NamedTemporaryFile(prefix='bazeldl-', delete=False)
+    print(f'dist_tempfile -> {dist_tempfile.name}')
 
-    url = '{}/{}/bazel-{}-linux-x86_64'.format(
-        BAZEL_REMOTE_SOURCE, BAZEL_VERSION, BAZEL_VERSION)
+    url = 'https://github.com/bazelbuild/bazel/releases/download/${bazel_version}/' \
+          'bazel-${bazel_version}-${host_os}-${bazel_architecture}'
 
     print('Downloading bazel {} from {}'.format(
         BAZEL_VERSION, url),
@@ -81,12 +45,14 @@ def download_bazel(dest):
     subprocess.check_call(['curl', '-L', url, '-o', dist_tempfile.name])
 
     actual_sha256 = subprocess.check_output([
-        'sha256sum', dist_tempfile.name]).decode('utf-8').split(' ')[0]
+        ${shasum_command}, dist_tempfile.name
+    ]).decode('utf-8').split(' ')[0]
 
     if actual_sha256 != BAZEL_VERSION_SHA.lower():
         raise RuntimeError(
-            'bazel sha256 does not match, expected {} got {}'.format(
-                BAZEL_VERSION_SHA, actual_sha256))
+            'bazel sha256 does not match, '
+            'expected ${bazel_sha} '
+            'got {}'.format(actual_sha256))
 
     subprocess.check_call(["chmod", "+x", dist_tempfile.name])
     shutil.move(dist_tempfile.name, dest)
