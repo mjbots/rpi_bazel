@@ -1,6 +1,7 @@
 # -*- python -*-
 
 # Copyright 2018-2020 Josh Pieper, jjp@pobox.com.
+# Copyright 2021 Diego Dagum, email@diegodagum.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +14,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+CLANG_VERSION = '10.0.0'
+SHARED_LIB_EXTENSION = '1.dylib'
+HOST_OS = 'darwin'
 
 package(default_visibility = ["//visibility:public"])
 
@@ -34,23 +39,23 @@ filegroup(
 
 filegroup(
     name = "clang_libs",
-    srcs = glob(["lib/clang/10.0.0/lib/linux/*.a"]),
+    srcs = glob(["lib/clang/{}/lib/{}/*.a".format(CLANG_VERSION, HOST_OS)]),
 )
 
 filegroup(
     name = "includes",
     srcs = glob([
         "include/c++/**",
-        "lib/clang/10.0.0/include/**",
+        "lib/clang/{}/include/**".format(CLANG_VERSION),
     ]),
 )
 
 filegroup(
     name = "runtime_libs",
     srcs = [
-        "lib/libc++.so.1",
-        "lib/libc++abi.so.1",
-        "lib/libunwind.so.1",
+        "lib/libc++.{}".format(SHARED_LIB_EXTENSION),
+        "lib/libc++abi.{}".format(SHARED_LIB_EXTENSION),
+        "lib/libunwind.{}".format(SHARED_LIB_EXTENSION),
     ],
 )
 

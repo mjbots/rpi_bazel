@@ -1,5 +1,6 @@
 # -*- python -*-
 # Copyright 2018-2019 Josh Pieper, jjp@pobox.com.
+# Copyright 2021 Diego Dagum, email@diegodagum.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+CLANG_VERSION = '10.0.0'
+HOST_CPU = 'darwin'
+HOST_OS = 'darwin'
+HOST_ARCHITECTURE = 'x86_64'
+
 package(default_visibility = ["//visibility:public"])
 
 load(":cc_toolchain_config.bzl", "cc_toolchain_config")
@@ -20,7 +26,7 @@ load(":cc_toolchain_config.bzl", "cc_toolchain_config")
 cc_toolchain_suite(
     name = "toolchain",
     toolchains = {
-        "k8|clang": "cc_toolchain_linux",
+        "{}|clang".format(HOST_CPU): "cc_toolchain_{}".format(HOST_OS),
         "armeabihf|clang": "cc_toolchain_armeabihf",
     },
 )
@@ -59,14 +65,14 @@ filegroup(
 
 
 cc_toolchain_config(
-    name = "clang-k8",
-    toolchain_identifier = "clang-k8",
-    cpu = "k8",
-    target_cpu = "k8",
-    target_system_name = "k8",
+    name = "clang-{}".format(HOST_CPU),
+    toolchain_identifier = "clang-{}".format(HOST_CPU),
+    cpu = HOST_CPU,
+    target_cpu = HOST_CPU,
+    target_system_name = HOST_CPU,
     builtin_include_directories = [
         "external/org_llvm_clang/include/",
-        "external/org_llvm_clang/lib/clang/7.0.0/include/",
+        "external/org_llvm_clang/lib/clang/{}/include/".format(CLANG_VERSION),
         "/usr/include/",
     ],
     host_compiler_prefix = "wrapper",
@@ -75,8 +81,8 @@ cc_toolchain_config(
 
 
 cc_toolchain(
-    name = "cc_toolchain_linux",
-    toolchain_identifier = "clang-x86_64",
+    name = "cc_toolchain_{}".format(HOST_OS),
+    toolchain_identifier = "clang-{}".format(HOST_ARCHITECTURE),
     all_files = ":clang_all",
     compiler_files = ":clang_all",
     dwp_files = ":clang_wrappers",
@@ -86,7 +92,7 @@ cc_toolchain(
     objcopy_files = ":clang_wrappers",
     strip_files = ":clang_wrappers",
     supports_param_files = True,
-    toolchain_config = ":clang-k8",
+    toolchain_config = ":clang-{}".format(HOST_CPU),
 )
 
 filegroup(
@@ -100,7 +106,7 @@ filegroup(
 cc_toolchain_config(
     name = "clang-armeabihf",
     toolchain_identifier = "clang-armeabihf",
-    cpu = "k8",
+    cpu = HOST_CPU,
     target_cpu = "armeabihf",
     target_system_name = "armeabihf",
     builtin_include_directories = [

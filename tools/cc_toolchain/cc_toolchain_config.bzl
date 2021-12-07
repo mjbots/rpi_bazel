@@ -1,5 +1,6 @@
 # -*- python -*-
 # Copyright 2018-2019 Josh Pieper, jjp@pobox.com.
+# Copyright 2021 Diego Dagum, email@diegodagum.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,6 +49,8 @@ load(
     "STRIP_ACTION_NAME",
 )
 
+HOST_CPU = 'darwin'
+
 ACTION_NAMES = struct(
     c_compile = C_COMPILE_ACTION_NAME,
     cpp_compile = CPP_COMPILE_ACTION_NAME,
@@ -71,7 +74,7 @@ ACTION_NAMES = struct(
 )
 
 def _impl(ctx):
-    host_system_name = "k8"
+    host_system_name = HOST_CPU
 
     all_compile_actions = [
         ACTION_NAMES.c_compile,
@@ -585,7 +588,7 @@ def _impl(ctx):
 cc_toolchain_config = rule(
         implementation = _impl,
     attrs = {
-        "cpu": attr.string(mandatory = True, values = ["k8", "armeabihf"]),
+        "cpu": attr.string(mandatory = True, values = [HOST_CPU, "armeabihf"]),
         "builtin_include_directories": attr.string_list(),
         "extra_no_canonical_prefixes_flags": attr.string_list(),
         "host_compiler_path": attr.string(),

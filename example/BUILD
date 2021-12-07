@@ -1,6 +1,7 @@
 # -*- python -*-
 
 # Copyright 2018 Josh Pieper, jjp@pobox.com.
+# Copyright 2021 Diego Dagum, email@diegodagum.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +16,14 @@
 # limitations under the License.
 
 cc_binary(
-    name = "example1",
+    name = "example1-arm",
     srcs = ["example1.cc"],
     deps = ["@org_llvm_libcxx//:libcxx"],
+    linkstatic = 1,
+)
+
+cc_binary(
+    name = "example1-darwin",
+    srcs = ["example1.cc"],
     linkstatic = 1,
 )
