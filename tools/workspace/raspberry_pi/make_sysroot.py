@@ -1,15 +1,16 @@
 #!/usr/bin/python3 -B
 
 # Copyright 2018 Josh Pieper, jjp@pobox.com.
+# Copyright 2021 Diego Dagum, email@diegodagum.com.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an 'AS IS' BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -25,7 +26,7 @@ import tempfile
 
 
 def call(cmd, *args, **kwargs):
-    print("Running:", cmd)
+    print('Running:', cmd)
     subprocess.check_call(cmd, *args, **kwargs)
 
 
@@ -115,6 +116,7 @@ def main():
         'dev',
         'etc',
         'home',
+        'lib/ssl',
         'lost+found',
         'media',
         'opt',
@@ -129,8 +131,6 @@ def main():
         'usr/lib/ssl',
         'var',
     ]
-
-    print(temp_dir)
 
     call([
         'rsync',
@@ -149,9 +149,9 @@ def main():
         temp_dir,
     ])
 
-    call("tar -c -C {} . | xz -9 > {}-sysroot.tar.xz".format(
+    call('tar -C {} -cJf {}-sysroot.tar.xz .'.format(
         temp_dir, datetime.date.today().isoformat()),
-         shell=True)
+        shell=True)
 
 
 if __name__ == '__main__':

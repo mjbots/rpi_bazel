@@ -1,6 +1,7 @@
 # -*- python -*-
 
 # Copyright 2018 Josh Pieper, jjp@pobox.com.
+# Copyright 2021 Diego Dagum, email@diegodagum.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +41,7 @@ filegroup(
 _raspberry_pi_attrs = {
     "sysroot": attr.label(
         allow_files=True,
-        default="@rpi_bazel//tools/workspace/raspberry_pi:2018-06-10-sysroot.tar.xz"),
+        default="@rpi_bazel//tools/workspace/raspberry_pi:2021-12-07-sysroot.tar.xz"),
 }
 
 raspberry_pi_repository = repository_rule(
