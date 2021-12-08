@@ -16,19 +16,10 @@
 # limitations under the License.
 
 import os
-import re
 import shutil
 import subprocess
 import sys
 import tempfile
-
-BAZEL_REMOTE_SOURCE = 'https://github.com/bazelbuild/bazel/releases/download'
-
-BAZEL_BIN_CACHE = os.path.expanduser('~/.cache/bazel')
-BAZEL_VERSION = '4.2.2'
-BAZEL_VERSION_SHA = '288660a310193c492a38a0480c42c74789564c09511e6adc045b5b4b4f117f7d'
-HOST_OS = 'darwin'
-HOST_ARCHITECTURE = 'x86_64'
 
 
 def download_bazel(dest):
@@ -38,9 +29,7 @@ def download_bazel(dest):
     url = 'https://github.com/bazelbuild/bazel/releases/download/${bazel_version}/' \
           'bazel-${bazel_version}-${host_os}-${bazel_architecture}'
 
-    print('Downloading bazel {} from {}'.format(
-        BAZEL_VERSION, url),
-          file=sys.stderr, flush=True)
+    print('Downloading bazel ${bazel_version} from {}'.format(url), file=sys.stderr, flush=True)
 
     subprocess.check_call(['curl', '-L', url, '-o', dist_tempfile.name])
 
@@ -48,18 +37,18 @@ def download_bazel(dest):
         ${shasum_command}, dist_tempfile.name
     ]).decode('utf-8').split(' ')[0]
 
-    if actual_sha256 != BAZEL_VERSION_SHA.lower():
+    if actual_sha256 != '${bazel_sha}'.lower():
         raise RuntimeError(
             'bazel sha256 does not match, '
             'expected ${bazel_sha} '
             'got {}'.format(actual_sha256))
 
-    subprocess.check_call(["chmod", "+x", dist_tempfile.name])
+    subprocess.check_call(['chmod', '+x', dist_tempfile.name])
     shutil.move(dist_tempfile.name, dest)
 
 
 def main():
-    bazel_bin_loc = os.path.join(BAZEL_BIN_CACHE, BAZEL_VERSION)
+    bazel_bin_loc = os.path.join(os.path.expanduser('/opt/bazel/'), '${bazel_version}', 'bazel')
 
     if not os.path.exists(bazel_bin_loc):
         os.makedirs(os.path.dirname(bazel_bin_loc), exist_ok=True)
