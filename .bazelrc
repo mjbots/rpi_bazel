@@ -13,11 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-build --compiler=clang
-test --compiler=clang
+build --compiler=compiler
+test --compiler=compiler
 
 build --python_path=/usr/bin/python3
 test --python_path=/usr/bin/python3
+
+build:arm --compiler=clang
+test:arm --compiler=clang
 
 build:arm --crosstool_top=//tools/cc_toolchain:toolchain
 test:arm --crosstool_top=//tools/cc_toolchain:toolchain

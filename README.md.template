@@ -1,0 +1,43 @@
+# Raspberry Pi Bazel Cross-Compilation Project
+
+This project contains a set of [Bazel](https://www.bazel.build/) [rules](https://docs.bazel.build/versions/main/skylark/rules.html) to cross-compile C++ to a Raspberry Pi using [Clang](https://clang.llvm.org/docs/CommandGuide/clang.html).  It includes a Raspberry Pi OS `sysroot`.
+
+It can also build the project for the host machine using the machine's default C++ toolchain. Bazel
+
+## Target Examples
+
+This project includes C++ binary target examples called `example:example1-x86_64` and `example:example1-arm`. The first target produces a binary for the host machine. The other one, a binary for Raspberry Pi. The important fact is that both binaries depend on the same source files.
+
+However, when cross-compiling for Raspberry Pi, we also build the C++ Standard Template Library (STL.) Therefore, `libc++` is a dependency for that target.
+
+You can use this example as a basis to build your own project.
+
+## How to Build the Targets
+
+To build for Arm, enter the following command on a terminal at the project root:
+
+```
+$ bazel build --config=arm //example:example1-arm
+```
+
+To build for your local machine, enter the following command on a terminal at the project root:
+
+```
+$ bazel build //example:example1-x86_64
+```
+
+# Requirements
+
+You can get Bazel ${bazel_version} installed by running from the project root:
+
+```
+$ sudo tools/bazel
+```
+
+You'll get Bazel installed at `/opt/bazel/${bazel_version}/bazel`.
+
+You'll also need a C++ toolchain (Clang or GCC) to build the local target. You can get one in many ways like, for example:
+
+```
+${toolchain_installation}
+```
