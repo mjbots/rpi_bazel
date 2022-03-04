@@ -1,6 +1,6 @@
 #!/usr/bin/python3 -B
 
-# Copyright 2018 Josh Pieper, jjp@pobox.com.
+# Copyright 2018-2022 Josh Pieper, jjp@pobox.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -74,6 +74,11 @@ def main():
         'libresolv*',
     ]]
 
+    if args.target == 'aarch64-linux-gnu':
+        lib_file_sources += [
+            '/lib/ld-linux-aarch64.so.1',
+        ]
+
     usr_lib_file_sources = ['/usr/lib/{}/{}'.format(args.target, x) for x in [
         '*.o',
         'libc.a',
@@ -127,6 +132,7 @@ def main():
         'tmp',
         'usr/share',
         'usr/lib/ssl',
+        'lib/ssl',
         'var',
     ]
 

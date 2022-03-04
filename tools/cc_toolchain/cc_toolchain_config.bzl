@@ -1,5 +1,5 @@
 # -*- python -*-
-# Copyright 2018-2019 Josh Pieper, jjp@pobox.com.
+# Copyright 2018-2022 Josh Pieper, jjp@pobox.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -144,6 +144,22 @@ def _impl(ctx):
                     flag_group(
                         flags = [
                             "--target=armv7-linux-gnueabihf",
+                        ],
+                    ),
+                ],
+            ),
+        ],
+    )
+
+    aarch64_feature = feature(
+        name = "aarch64",
+        flag_sets = [
+            flag_set(
+                actions = all_compile_actions + all_link_actions,
+                flag_groups = [
+                    flag_group(
+                        flags = [
+                            "--target=aarch64-linux-gnueabihf",
                         ],
                     ),
                 ],
@@ -350,19 +366,37 @@ def _impl(ctx):
     # I can't figure out how the official bazel sysroot feature works,
     # and it appears to have 0 documentation.  Instead, make my own
     # one here and use that, since at least I can get it to work.
-    rpi_sysroot_feature = feature(
-        name = "rpi_sysroot",
+    rpi_armeabihf_sysroot_feature = feature(
+        name = "rpi_armeabihf_sysroot",
         flag_sets = [
             flag_set(
                 actions = all_compile_actions + all_link_actions,
                 flag_groups = [flag_group(flags = [
-                    "--sysroot=external/raspberry_pi/sysroot",
+                    "--sysroot=external/raspberry_pi_armeabihf/sysroot",
                 ])],
             ),
             flag_set(
                 actions = all_compile_actions,
                 flag_groups = [flag_group(flags = [
-                    "-isysroot=external/raspberry_pi/sysroot",
+                    "-isysroot=external/raspberry_pi_armeabihf/sysroot",
+                ])],
+            ),
+        ],
+    )
+
+    rpi_aarch64_sysroot_feature = feature(
+        name = "rpi_aarch64_sysroot",
+        flag_sets = [
+            flag_set(
+                actions = all_compile_actions + all_link_actions,
+                flag_groups = [flag_group(flags = [
+                    "--sysroot=external/raspberry_pi_aarch64/sysroot",
+                ])],
+            ),
+            flag_set(
+                actions = all_compile_actions,
+                flag_groups = [flag_group(flags = [
+                    "-isysroot=external/raspberry_pi_aarch64/sysroot",
                 ])],
             ),
         ],
@@ -508,8 +542,11 @@ def _impl(ctx):
             "linker-bin-path",
             "lld",
             "debuginfo",
-        ] + (["armeabihf", "rpi_sysroot"]
-             if "armeabihf" in ctx.attr.extra_features else [])
+        ] + (["armeabihf", "rpi_armeabihf_sysroot"]
+             if "armeabihf" in ctx.attr.extra_features else
+             ["aarch64", "rpi_aarch64_sysroot"]
+             if "aarch64" in ctx.attr.extra_features else
+             [])
     )
 
     features = [
@@ -535,7 +572,9 @@ def _impl(ctx):
         lld_feature,
         debuginfo_feature,
         armeabihf_feature,
-        rpi_sysroot_feature,
+        aarch64_feature,
+        rpi_armeabihf_sysroot_feature,
+        rpi_aarch64_sysroot_feature,
     ]
 
     cxx_builtin_include_directories = ctx.attr.builtin_include_directories

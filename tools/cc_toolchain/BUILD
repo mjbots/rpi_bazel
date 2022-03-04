@@ -1,5 +1,5 @@
 # -*- python -*-
-# Copyright 2018-2019 Josh Pieper, jjp@pobox.com.
+# Copyright 2018-2022 Josh Pieper, jjp@pobox.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ cc_toolchain_suite(
     toolchains = {
         "k8|clang": "cc_toolchain_linux",
         "armeabihf|clang": "cc_toolchain_armeabihf",
+        "aarch64|clang": "cc_toolchain_aarch64",
     },
 )
 
@@ -104,8 +105,8 @@ cc_toolchain_config(
     target_cpu = "armeabihf",
     target_system_name = "armeabihf",
     builtin_include_directories = [
-        "external/raspberry_pi/sysroot/usr/include/arm-linux-gnueabihf",
-        "external/raspberry_pi/sysroot/usr/include",
+        "external/raspberry_pi_armeabihf/sysroot/usr/include/arm-linux-gnueabihf",
+        "external/raspberry_pi_armeabihf/sysroot/usr/include",
         "external/org_llvm_clang/include/",
         "external/org_llvm_clang/lib/clang/7.0.0/include/",
         "/usr/include/",
@@ -131,4 +132,40 @@ cc_toolchain(
     strip_files = ":clang_wrappers",
     supports_param_files = True,
     toolchain_config = ":clang-armeabihf",
+)
+
+cc_toolchain_config(
+    name = "clang-aarch64",
+    toolchain_identifier = "clang-aarch64",
+    cpu = "k8",
+    target_cpu = "aarch64",
+    target_system_name = "aarch64",
+    builtin_include_directories = [
+        "external/raspberry_pi_aarch64/sysroot/usr/include/arm-linux-aarch64",
+        "external/raspberry_pi_aarch64/sysroot/usr/include",
+        "external/org_llvm_clang/include/",
+        "external/org_llvm_clang/lib/clang/7.0.0/include/",
+        "/usr/include/",
+    ],
+    host_compiler_prefix = "wrapper",
+    host_compiler_path = "wrapper/clang-clang",
+    extra_features = [
+        "aarch64",
+    ],
+    linker_bin_path = "external/org_llvm_clang/bin",
+)
+
+cc_toolchain(
+    name = "cc_toolchain_aarch64",
+    toolchain_identifier = "clang-aarch64",
+    all_files = ":clang_arm_all",
+    compiler_files = ":clang_arm_all",
+    dwp_files = ":clang_wrappers",
+    linker_files = ":clang_arm_all",
+    ar_files = ":clang_arm_all",
+    as_files = ":clang_arm_all",
+    objcopy_files = ":clang_wrappers",
+    strip_files = ":clang_wrappers",
+    supports_param_files = True,
+    toolchain_config = ":clang-aarch64",
 )

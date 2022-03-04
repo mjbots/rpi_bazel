@@ -43,7 +43,17 @@ _raspberry_pi_attrs = {
         default="@rpi_bazel//tools/workspace/raspberry_pi:2018-06-10-sysroot.tar.xz"),
 }
 
-raspberry_pi_repository = repository_rule(
+_raspberry_pi_repository = repository_rule(
     implementation = _raspberry_pi_impl,
     attrs = _raspberry_pi_attrs,
 )
+
+def raspberry_pi_repository():
+    _raspberry_pi_repository(
+        name="raspberry_pi_armeabihf",
+        sysroot="@rpi_bazel//tools/workspace/raspberry_pi:2018-06-10-sysroot.tar.xz",
+    )
+    _raspberry_pi_repository(
+        name="raspberry_pi_aarch64",
+        sysroot="@rpi_bazel//tools/workspace/raspberry_pi:2022-03-03-sysroot-aarch64.tar.xz",
+    )

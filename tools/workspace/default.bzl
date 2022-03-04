@@ -1,6 +1,6 @@
 # -*- python -*-
 
-# Copyright 2018-2019 Josh Pieper, jjp@pobox.com.
+# Copyright 2018-2022 Josh Pieper, jjp@pobox.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,4 +21,4 @@ def add_default_repositories(excludes = []):
     if "clang" not in excludes:
         clang_repository()
     if "raspberry_pi" not in excludes:
-        raspberry_pi_repository(name = "raspberry_pi")
+        raspberry_pi_repository()
