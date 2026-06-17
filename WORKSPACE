@@ -19,6 +19,14 @@ workspace(name = "rpi_bazel")
 BAZEL_VERSION = "7.4.1"
 BAZEL_VERSION_SHA = "c97f02133adce63f0c28678ac1f21d65fa8255c80429b588aeeba8a1fac6202b"
 
-load("//tools/workspace:default.bzl", "add_default_repositories")
+load("//tools/workspace:default.bzl",
+     "add_default_repositories",
+     "add_default_toolchains")
 
 add_default_repositories()
+
+# Register the Raspberry Pi cross toolchains plus the host (k8)
+# clang+libc++ toolchain, so this repository's own example builds for
+# the host with clang.  (Consumers get only the cross toolchains unless
+# they too pass register_host = True.)
+add_default_toolchains(register_host = True)

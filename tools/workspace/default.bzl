@@ -22,3 +22,27 @@ def add_default_repositories(excludes = []):
         clang_repository()
     if "raspberry_pi" not in excludes:
         raspberry_pi_repository()
+
+def add_default_toolchains(register_host = False):
+    """Register the Raspberry Pi cross-compilation toolchains.
+
+    Call this from a consumer's WORKSPACE (after add_default_repositories)
+    to make rpi_bazel's toolchains available to Bazel's platform-based
+    toolchain resolution.  Then build with
+    --platforms=@rpi_bazel//:armeabihf (or :aarch64).
+
+    By default only the cross toolchains are registered, so a consumer's
+    host builds keep using their own autodetected host toolchain.  Pass
+    register_host = True to also register the host (k8) clang+libc++
+    toolchain -- use this if you want host builds to use rpi_bazel's
+    clang+libc++ toolchain (as the quad / com_github_mjbots_mech project
+    does) rather than the autodetected one.
+    """
+    if register_host:
+        native.register_toolchains(
+            "@rpi_bazel//tools/cc_toolchain:k8_toolchain",
+        )
+    native.register_toolchains(
+        "@rpi_bazel//tools/cc_toolchain:armeabihf_toolchain",
+        "@rpi_bazel//tools/cc_toolchain:aarch64_toolchain",
+    )

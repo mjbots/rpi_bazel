@@ -17,6 +17,12 @@ package(default_visibility = ["//visibility:public"])
 
 load(":cc_toolchain_config.bzl", "cc_toolchain_config")
 
+# Legacy cc_toolchain_suite.  Bazel now uses platform-based toolchain
+# resolution (the toolchain() rules below), but this suite is kept so
+# that consumers which still pass --crosstool_top=@rpi_bazel//tools/cc_toolchain:toolchain
+# (along with a matching --cpu) continue to work, and so it can be used
+# to work around https://github.com/bazelbuild/bazel/issues/12036 if
+# needed.  Prefer --platforms=@rpi_bazel//:armeabihf (or :aarch64).
 cc_toolchain_suite(
     name = "toolchain",
     toolchains = {
@@ -24,6 +30,10 @@ cc_toolchain_suite(
         "armeabihf|clang": "cc_toolchain_armeabihf",
         "aarch64|clang": "cc_toolchain_aarch64",
     },
+    # Excluded from wildcard builds (//...): analyzing the suite requires
+    # the legacy --cpu/--compiler flags, which are no longer set by
+    # default now that toolchains are selected via --platforms.
+    tags = ["manual"],
 )
 
 filegroup(
@@ -168,4 +178,60 @@ cc_toolchain(
     strip_files = ":clang_wrappers",
     supports_param_files = True,
     toolchain_config = ":clang-aarch64",
+)
+
+
+# Platform-based toolchain resolution.  Each toolchain() advertises a
+# cc_toolchain for a particular target platform; Bazel selects the one
+# whose target_compatible_with matches --platforms.  These are
+# registered for consumers by add_default_toolchains() in
+# //tools/workspace:default.bzl (the cross toolchains) and for this
+# repository's own builds in the WORKSPACE (which also registers the
+# host k8 toolchain).
+
+# Host (x86_64 linux) clang+libc++ toolchain.  Registered only for
+# rpi_bazel's own builds, not exposed to consumers, so that downstream
+# host builds keep using their autodetected host toolchain.
+toolchain(
+    name = "k8_toolchain",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    toolchain = ":cc_toolchain_linux",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)
+
+# 32-bit Raspberry Pi (armv7 hard-float).
+toolchain(
+    name = "armeabihf_toolchain",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:armv7",
+        "@platforms//os:linux",
+    ],
+    toolchain = ":cc_toolchain_armeabihf",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)
+
+# 64-bit Raspberry Pi (aarch64).
+toolchain(
+    name = "aarch64_toolchain",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:linux",
+    ],
+    toolchain = ":cc_toolchain_aarch64",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
