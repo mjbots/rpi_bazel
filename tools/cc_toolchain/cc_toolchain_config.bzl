@@ -159,7 +159,7 @@ def _impl(ctx):
                 flag_groups = [
                     flag_group(
                         flags = [
-                            "--target=aarch64-linux-gnueabihf",
+                            "--target=aarch64-linux-gnu",
                         ],
                     ),
                 ],

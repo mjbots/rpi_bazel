@@ -26,31 +26,44 @@ cc_library(
     hdrs = [":raw_headers"],
 )
 
+# Internal headers that libc++abi also needs.
+cc_library(
+    name = "src_headers",
+    hdrs = glob(["src/include/**/*.h"]),
+)
+
 cc_library(
     name = "libcxx",
     hdrs = glob(["include/**"]),
     srcs = glob([
         "src/*.cpp",
-        "src/include/*.h",
-        "filesystem/*.cpp",
-        "filesystem/*.h",
+        "src/*.h",
+        "src/include/**/*.h",
+        "src/filesystem/*.cpp",
+        "src/filesystem/*.h",
+        "src/ryu/*.cpp",
+    ], exclude = [
+        # libc++abi provides these.
+        "src/new.cpp",
     ]),
     textual_hdrs = glob([
         "src/support/runtime/**",
     ]),
     copts = [
-        "-Iexternal/org_llvm_libcxx/src/include",
+        "-std=c++23",
         "-Iexternal/org_llvm_libcxx/src",
         "-D_LIBCPP_BUILDING_LIBRARY",
-        "-D_LIBCPP_HAS_NO_PRAGMA_SYSTEM_HEADER",
+        "-D_LIBCPP_LINK_PTHREAD_LIB",
+        "-D_LIBCPP_LINK_RT_LIB",
         "-DLIBCXX_BUILDING_LIBCXXABI",
-        "-DLIBCXX_CXX_ABI=libstdc++",
         "-DNDEBUG",
         "-fvisibility-inlines-hidden",
+        "-fsized-deallocation",
     ],
     includes = ["include"],
     deps = [
         ":headers",
+        "@org_llvm_libc//:common_utils",
         "@org_llvm_libcxxabi//:libcxxabi",
     ],
 )

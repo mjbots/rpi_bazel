@@ -21,6 +21,8 @@ filegroup(
     srcs = [
         "bin/clang",
         "bin/clang++",
+        "bin/clang-20",
+        "bin/lld",
         "bin/llvm-dwp",
         "bin/llvm-objcopy",
         "bin/llvm-objdump",
@@ -29,36 +31,39 @@ filegroup(
         "bin/llvm-ar",
         "bin/llvm-nm",
         "bin/llvm-cov",
-    ],
+    ] + glob(
+        # Only present when the host has no libxml2.so.2 of its own.
+        ["lib/libxml2.so.2"],
+        allow_empty = True,
+    ),
 )
 
 filegroup(
     name = "clang_libs",
-    srcs = glob(["lib/clang/10.0.0/lib/linux/*.a"]),
+    srcs = glob(["lib/clang/20/lib/*/*.a"]),
 )
 
 filegroup(
     name = "includes",
     srcs = glob([
-        "include/c++/**",
-        "lib/clang/10.0.0/include/**",
+        "lib/clang/20/include/**",
     ]),
 )
 
 filegroup(
     name = "runtime_libs",
     srcs = [
-        "lib/libc++.so.1",
-        "lib/libc++abi.so.1",
-        "lib/libunwind.so.1",
+        "lib/x86_64-unknown-linux-gnu/libc++.so.1",
+        "lib/x86_64-unknown-linux-gnu/libc++abi.so.1",
+        "lib/x86_64-unknown-linux-gnu/libunwind.so.1",
     ],
 )
 
 filegroup(
     name = "static_libs",
     srcs = [
-        "lib/libc++.a",
-        "lib/libc++abi.a",
-        "lib/libunwind.a",
+        "lib/x86_64-unknown-linux-gnu/libc++.a",
+        "lib/x86_64-unknown-linux-gnu/libc++abi.a",
+        "lib/x86_64-unknown-linux-gnu/libunwind.a",
     ],
 )
